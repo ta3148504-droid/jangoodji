@@ -1,0 +1,181 @@
+<준비>
+1. Python 설치
+https://www.python.org/downloads
+
+2. VS Code 설치
+https://code.visualstudio.com/
+
+3. Git 설치(맘대루)
+https://git-scm.com/install/windows
+
+키 : AIzaSyBAYERh7Y-UvAdLDrAZV-f1VdbFRvC7p-E
+https://aistudio.google.com/api-keys?project=gen-lang-client-0416336066
+
+<순서 (cmd에서 함)>
+1. 프로젝트 폴더생성
+mkdir test-project
+cd test-project
+
+2. 가상환경 생성 (window)
+python -m venv venv
+or
+- pyenv-win 설치
+git clone https://github.com/pyenv-win/pyenv-win.git %USERPROFILE%\.pyenv
+- 환경변수 추가
+C:\Users\yj339\.pyenv\pyenv-win\bin
+C:\Users\yj339\.pyenv\pyenv-win\shims
+
+3. 가상환경 실행
+venv\Scripts\activate
+
+4. 필수 패키지 설치
+pip install google-generativeai
+pip install python-dotenv
+
+5. 실행파일 만듦
+notepad main.py
+
+6. 테스트 코드 입력 저장
+
+7. 실행
+python main.py
+
+8. Streamlit 설정 (화면처럼 보이게)
+pip install streamlit
+
+9. Streamlit 실행
+streamlit run app.py
+
+
+<2차 순서 (vs에서함)>
+1 폴더생성
+mkdir test-project
+
+2. 가상환경 생성
+venv\Scripts\activate.bat
+
+3.PowerShell에서 허용
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+4. 가상환경 활성화
+.\venv\Scripts\Activate.ps1
+
+5. 필수 패키지 설치
+pip install python-dotenv
+pip install ipykernel
+
+6. .env 파일 만들기
+OPENAI_API_KEY=AIzaSyCzzmDphSxZ_O_jYLM4TOxDrecrj5X4y3M
+
+7. 
+%pip install langchain-openai
+
+8. 커널선택
+
+9. .env 파일 불러오기
+from dotenv import load_dotenv
+load_dotenv()
+
+10. 오류나서 터미널에서 함
+pip install langchain-openai python-dotenv ipykernel (강의버전)
+>> 재미나이 버전임 : %pip install langchain-google-genai
+
+11. streamlit 다운
+%pip install streamlit
+
+12. 
+streamlit run test.py
+
+
+<테스트>
+1.검침이 이상하게 나와요
+
+---
+답변이 문서 기반처럼 보이지만 실제로는 LLM이 내용을 보태는 상태
+핵심은 score를 더 엄격하게 계산하고, 상위 점수가 낮으면 바로 종료
+
+
+
+---------
+<질문 매칭 테스트>
+🟢하 (정확 매칭 / QA 그대로)
+
+👉 특정 세대 빼고 검침 보내고 싶어요
+기대 답변
+단지관리 > 단지정보 > 동호생성
+단지보기 클릭
+한전 계좌 삭제
+
+👉 엑셀 업로드할 때 데이터 존재하지 않습니다 오류 왜 나요
+기대 답변
+월분수신 먼저 해야 함
+동호/전월 데이터 없어서 발생
+이후 데이터업로드 진행
+
+👉 수도 요금 잘못 나왔는데 어떻게 수정해요
+기대 답변
+수도사업소 조견표 확인
+팩스 요청 OR 시스템에서 단가 수정
+
+🟡중 (변형 질문 / 자연어 이해)
+
+👉 검침 송신할 때 세대수 안 맞아요
+기대 답변
+공동동호 포함 가능성
+특정 동호 제외 방법 안내
+한전 계좌 삭제 설명
+
+👉 엑셀 업로드가 안 돼요
+기대 답변
+월분수신 먼저
+데이터업로드 순서
+엑셀 형식 (동/호/지침)
+
+👉 검침 데이터 안 불러와져요
+기대 답변
+월분수신 필요
+동호 정보 없으면 오류 발생
+
+🔴 상 (애매 / 고급 테스트)
+
+👉 검침이 이상하게 나와요
+기대 답변
+문서에서 확인되지 않습니다.
+
+👉 왜 검침 오류가 나는지 알려줘
+기대 답변
+문서에서 확인되지 않습니다.
+또는
+월분수신 관련만 제한적으로 언급
+
+👉 시스템 문제인가요?
+기대 답변
+문서에서 확인되지 않습니다.
+
+💣 보너스 (함정 테스트)
+👉 엑셀 안 되면 프로그램 다시 깔아야 돼?
+정답
+문서에서 확인되지 않습니다.
+
+
+
+---------------------
+<발표>
+이번 과제는 RAG 기반 검침 챗봇으로 구현했습니다.
+구조는 크게 질문 입력 → 문서 검색 → LLM 답변 생성 흐름입니다.
+
+먼저 사용자가 질문을 입력하면, 검침QA 텍스트 파일에서 질문과 가장 유사한 Q/A를 우선 검색합니다.
+이 과정이 RAG의 Retrieval, 즉 검색 단계입니다.
+
+그다음 검색된 참고자료만 Gemini 모델에 전달해서 답변을 생성합니다.
+이 부분이 Generation, 즉 생성 단계입니다.
+
+여기서 중요한 점은, 모델이 전체 지식을 바탕으로 자유롭게 답하는 게 아니라,
+검색된 문서 내용만 근거로 답하도록 제한했다는 것입니다.
+
+정리하면,
+이 챗봇은 검침QA 문서를 검색해서 관련 내용을 찾고, Gemini가 그 내용을 바탕으로 답변하는 RAG 구조로 동작합니다.
+즉, 단순한 일반 챗봇이 아니라 문서 기반 업무 지원 챗봇이라는 점이 핵심입니다.
+
+
+

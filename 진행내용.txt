@@ -1,0 +1,11 @@
+LLM은 gemini 모델은 2.5
+gemini key는 AIzaSyBAYERh7Y-UvAdLDrAZV-f1VdbFRvC7p-E
+모델은 2.5로 사용하시고 모델명은 검색하시면 나옵니당.
+
+
+
+AIzaSyCzzmDphSxZ_O_jYLM4TOxDrecrj5X4y3M
+
+
+
+AIzaSyBAYERh7Y-UvAdLDrAZV-f1VdbFRvC7p-E
